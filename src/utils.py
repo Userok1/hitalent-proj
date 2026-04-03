@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .schemas import Department, DepartmentReturn, DepartmentUpdate, Employee, DepartmentInfo, EmployeeReturn
+from .schemas import Department, DepartmentUpdate, Employee, DepartmentInfo, EmployeeReturn
 from .models import DepartmentOrm, EmployeeOrm
 
 
@@ -30,7 +30,9 @@ def add_department(department: Department, session: Session) -> DepartmentOrm:
         else:
             select_parent_stmt = select(DepartmentOrm).where(DepartmentOrm.id == department.parent_id)
             parent = session.execute(select_parent_stmt).scalars().first()
-            if department.name in parent.children:
+            department_orm = DepartmentOrm(**department.model_dump())
+            # if department.name in parent.children:
+            if department_orm in parent.children:
                 raise HTTPException(
                     status_code=400,
                     detail="Department can't have subdepartments with the same name"
@@ -129,8 +131,8 @@ def update_department(dep_id: int, dep_changes: DepartmentUpdate, session: Sessi
     
 
 def remove_department(
-    dep_id: int, 
-    mode: Literal["cascade", "reassign"], 
+    dep_id: int,
+    mode: Literal["cascade", "reassign"],
     reassign_to_department_id: int | None,
     session: Session,
 ) -> None:

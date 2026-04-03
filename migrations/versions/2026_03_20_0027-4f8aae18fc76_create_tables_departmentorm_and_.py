@@ -6,6 +6,7 @@ Create Date: 2026-03-20 00:27:18.657879
 
 """
 from typing import Sequence, Union
+import datetime
 
 from alembic import op
 import sqlalchemy as sa
@@ -26,7 +27,7 @@ def upgrade() -> None:
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('name', sa.String(length=200), nullable=False),
         sa.Column('parent_id', sa.Integer(), nullable=True),
-        sa.Column('created_at', sa.DateTime(), nullable=False),
+        sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.PrimaryKeyConstraint('id'),
         sa.ForeignKeyConstraint(['parent_id'], ['departments.id'], ondelete='CASCADE'),
         sa.UniqueConstraint('name'),
@@ -38,7 +39,7 @@ def upgrade() -> None:
         sa.Column('full_name', sa.String(length=200), nullable=False),
         sa.Column('position', sa.String(length=200), nullable=False),
         sa.Column('hired_at', sa.DateTime(), nullable=True),
-        sa.Column('created_at', sa.DateTime(), nullable=False),
+        sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.PrimaryKeyConstraint('id'),
         sa.ForeignKeyConstraint(['department_id'], ['departments.id'], ),
     )

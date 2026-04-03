@@ -2,3 +2,4 @@
 .env
 __*
 .pytest_cache
+session.vim

@@ -24,7 +24,7 @@ def create_employee(id: int, employee: Employee, session: Annotated[Session, Dep
 
 @router.get("/departments/{id}", response_model=DepartmentInfo)
 def read_department_info(
-    id: int, 
+    id: int,
     session: Annotated[Session, Depends(get_session)],
     depth: Annotated[int, Query(ge=1, le=5)] = 1,
     include_employees: bool = True,
@@ -36,7 +36,8 @@ def read_department_info(
                 status_code=404,
                 detail="Not found",
             )
-        return DepartmentInfo.model_validate(info)
+        # return DepartmentInfo.model_validate(info)
+        return info
     
 
 @router.patch("/departments/{id}")

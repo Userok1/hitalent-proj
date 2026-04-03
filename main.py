@@ -14,5 +14,11 @@ from src.schemas import DepartmentInfo
 #     Base.metadata.drop_all(engine)
 
 
+# Add lifespan for manual testing
+# app = FastAPI(lifespan=lifespan)
 app = FastAPI()
 app.include_router(router)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)

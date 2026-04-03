@@ -45,7 +45,7 @@ class DepartmentInfo(BaseModel):
     parent_id: int | None
     created_at: datetime.datetime
     employees: list[EmployeeReturn]
-    children: list[DepartmentInfo] | list[str]
+    children: list["DepartmentInfo"] | list[str]
     
 
 class DepartmentUpdate(BaseModel):

@@ -18,26 +18,30 @@ load_dotenv(".env")
 config = context.config
 
 # Reading from environment variables
-_env_vars = {
-    "POSTGRES_PROTO": os.getenv("POSTGRES_PROTO"), 
-    "POSTGRES_LOGIN": os.getenv("POSTGRES_LOGIN"), 
-    "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"), 
-    "POSTGRES_HOST": os.getenv("POSTGRES_HOST"), 
-    "POSTGRES_PORT": os.getenv("POSTGRES_PORT"), 
-    "POSTGRES_DB_NAME": os.getenv("POSTGRES_DB_NAME"),
-}
-if not all(_env_vars.values()):
-    raise ValueError("PostgresQL db url should be full")
+# _env_vars = {
+#     "POSTGRES_PROTO": os.getenv("POSTGRES_PROTO"), 
+#     "POSTGRES_LOGIN": os.getenv("POSTGRES_LOGIN"), 
+#     "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"), 
+#     "POSTGRES_HOST": os.getenv("POSTGRES_HOST"), 
+#     "POSTGRES_PORT": os.getenv("POSTGRES_PORT"), 
+#     "POSTGRES_DB_NAME": os.getenv("POSTGRES_DB_NAME"),
+# }
+# if not all(_env_vars.values()):
+#     raise ValueError("PostgresQL db url should be full")
 
-database_url = "{0}://{1}:{2}@{3}:{4}/{5}".format(
-    _env_vars["POSTGRES_PROTO"],
-    _env_vars["POSTGRES_LOGIN"],
-    _env_vars["POSTGRES_PASSWORD"],
-    _env_vars["POSTGRES_HOST"],
-    _env_vars["POSTGRES_PORT"],
-    _env_vars["POSTGRES_DB_NAME"]
-)
-config.set_main_option("sqlalchemy.url", database_url)
+# database_url = "{0}://{1}:{2}@{3}:{4}/{5}".format(
+#     _env_vars["POSTGRES_PROTO"],
+#     _env_vars["POSTGRES_LOGIN"],
+#     _env_vars["POSTGRES_PASSWORD"],
+#     _env_vars["POSTGRES_HOST"],
+#     _env_vars["POSTGRES_PORT"],
+#     _env_vars["POSTGRES_DB_NAME"]
+# )
+database_url = os.getenv("DATABASE_URL")
+if database_url:
+    config.set_main_option("sqlalchemy.url", database_url)
+else:
+    raise ValueError("PostgresQL db url should be set")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
